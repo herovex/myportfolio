@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function checkLastDigits(num1, num2, num3) {
+    const lastDigit1 = num1 % 10;
+    const lastDigit2 = num2 % 10;
+    const lastDigit3 = num3 % 10;
+
+    return lastDigit1 === lastDigit2 && lastDigit2 === lastDigit3;
+}
+
+const num1 = 25;
+const num2 = 35;
+const num3 = 45;
+
+if (checkLastDigits(num1, num2, num3)) {
+    console.log("The last digits are the same.");
+} else {
+    console.log("The last digits are not the same.");
+}
+    </script>
+</body>
+</html>
