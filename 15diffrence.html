@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+  function checkIntegers(x, y) {
+    // Check if either integer is 15
+    if (x == 15 || y == 15) {
+        return true;
+    }
+    // Check if the sum of the integers is 15
+    else if (x + y == 15) {
+        return true;
+    }
+    // Check if the absolute difference between the integers is 15
+    else if (Math.abs(x - y) == 15) {
+        return true;
+    }
+    // None of the conditions are met
+    else {
+        return false;
+    }
+}
+
+console.log(checkIntegers(15, 10)); // true
+console.log(checkIntegers(8, 8));   // false
+console.log(checkIntegers(10, 5));  // true
+console.log(checkIntegers(20, 5));  // true
+    </script>
+</body>
+</html>
