@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Explorations</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .cards {
+            --item-width: 350px;
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            overflow-x: auto;
+            overflow-y: hidden;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            position: relative;
+            margin: 0;
+            box-sizing: border-box;
+            padding: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .cards .card:first-of-type {
+            margin-left: calc(50% - (var(--item-width) / 2));
+        }
+
+        .cards .card:last-of-type {
+            margin-right: calc(50% - (var(--item-width) / 2));
+        }
+
+        .card {
+            view-timeline-name: --item-visible;
+            view-timeline-axis: inline;
+            animation: linear adjust-z-index both;
+            animation-timeline: --item-visible;
+            transform: translate3d(0, 0, 0);
+            flex: 0 0 auto;
+            perspective: 1000px;
+            position: relative;
+            z-index: 1;
+            will-change: transform;
+            display: block;
+            scroll-snap-align: center;
+            text-decoration: none;
+        }
+
+        .card>.image {
+            position: relative;
+            display: block;
+            animation: linear rotate both;
+            animation-timeline: --item-visible;
+            will-change: transform;
+            width: var(--item-width);
+            aspect-ratio: 250 / 350;
+            transform-style: preserve-3d;
+            transform: translate3d(-50%, 0, 0) rotate3d(0, 1, 0, -45deg) scale(0.5);
+            backface-visibility: hidden;
+        }
+
+        .image>img {
+            display: block;
+            border-radius: 1rem;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image .reflection {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 100%;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0.5)),
+                var(--image);
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 1rem;
+            transform: scaleY(-1) translateY(-0.5em);
+            opacity: 0.5;
+        }
+
+        @keyframes adjust-z-index {
+            0% {
+                z-index: 1;
+            }
+            50% {
+                z-index: 100;
+            }
+            100% {
+                z-index: 1;
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translate3d(-50%, 0, 0) rotate3d(0, 1, 0, -45deg) scale(0.5);
+                opacity: 0.25;
+            }
+            35% {
+                transform: translate3d(0, 0, 0) rotate3d(0, 1, 0, -40deg) scale(0.75);
+            }
+            50% {
+                transform: translate3d(0, 0, 1em) rotate3d(0, 1, 0, 0) scale(1);
+                opacity: 1;
+            }
+            65% {
+                transform: translate3d(0, 0, 0) rotate3d(0, 1, 0, 40deg) scale(0.75);
+            }
+            100% {
+                transform: translate3d(50%, 0, 0) rotate3d(0, 1, 0, 45deg) scale(0.5);
+                opacity: 0.25;
+            }
+        }
+
+        /* Enhanced scrollbar styling */
+        .cards::-webkit-scrollbar {
+            height: 15px;
+            margin-top: 20px;
+            background: transparent;
+        }
+
+        .cards::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin: 0 150px; /* Add margin to shorten the scrollbar */
+            border: 2px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cards::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.2), 
+                rgba(255, 255, 255, 0.3)
+            );
+            border-radius: 10px;
+            border: 3px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 
+                inset 0 0 6px rgba(255, 255, 255, 0.1),
+                0 0 10px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .cards::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.3), 
+                rgba(255, 255, 255, 0.4)
+            );
+            box-shadow: 
+                inset 0 0 8px rgba(255, 255, 255, 0.2),
+                0 0 12px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Add smooth fade effect to the edges */
+        .cards::before,
+        .cards::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            width: 150px;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .cards::before {
+            left: 0;
+            background: linear-gradient(to right, 
+                rgba(0, 0, 0, 1), 
+                rgba(0, 0, 0, 0)
+            );
+        }
+
+        .cards::after {
+            right: 0;
+            background: linear-gradient(to left, 
+                rgba(0, 0, 0, 1), 
+                rgba(0, 0, 0, 0)
+            );
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .cards {
+                --item-width: 250px;
+            }
+            .card>.image {
+                width: var(--item-width);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards {
+                --item-width: 200px;
+            }
+            .card>.image {
+                width: var(--item-width);
+            }
+        }
+
+        /* Remove the click-animation class and add new fullscreen overlay styles */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            overflow: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .fullscreen-overlay.active {
+            opacity: 1;
+        }
+
+        .fullscreen-overlay img {
+            max-width: 90%;
+            max-height: 80vh;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transform: scale(0.5);
+            opacity: 0;
+            transition: transform 0.4s ease-out, opacity 0.3s ease;
+            margin: 20px 0;
+            object-fit: contain;
+        }
+
+        .fullscreen-overlay.active img {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Optional: Add animation for closing */
+        .fullscreen-overlay.closing img {
+            transform: scale(0.5);
+            opacity: 0;
+        }
+
+        /* Updated info box styles */
+        .info-box {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.4s ease-out;
+        }
+
+        .info-box.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .info-box h2 {
+            font-size: clamp(20px, 4vw, 28px);
+            margin: 0 0 10px 0;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .info-box p {
+            font-size: clamp(14px, 2.5vw, 16px);
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+            max-width: 800px;
+        }
+
+        /* Add close button */
+        .close-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: background 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .fullscreen-overlay {
+                padding: 15px;
+            }
+            
+            .info-box {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .fullscreen-overlay img {
+                max-width: 95%;
+            }
+        }
+
+        /* Custom scrollbar for both vertical and horizontal */
+        .fullscreen-overlay::-webkit-scrollbar {
+            width: 12px;
+            height: 12px; /* Height for horizontal scrollbar */
+            background: transparent;
+        }
+
+        .fullscreen-overlay::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+
+        .fullscreen-overlay::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.2), 
+                rgba(255, 255, 255, 0.3)
+            );
+            border-radius: 6px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 
+                inset 0 0 6px rgba(255, 255, 255, 0.1),
+                0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .fullscreen-overlay::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.3), 
+                rgba(255, 255, 255, 0.4)
+            );
+        }
+
+        .fullscreen-overlay::-webkit-scrollbar-corner {
+            background: rgba(255, 255, 255, 0.05); /* Style the corner where scrollbars meet */
+        }
+    </style>
+</head>
+<body>
+    <div class="cards">
+        <div class="card" data-title="Point-Counter" data-description="This project was inspired by Tapswap, but it is in the form of a uniue counter, giving Tappy experience. Firstly a welcome page for the player, then the next page consist of a unique Background animated gradient, for user perspective. It is added with shake animation once increaed or decreased and even reset, and a toggle button for light and dark mode.">
+            <div class="image">
+                <img src="yon.png" />
+                <div class="reflection" style="--image: url(yon.png)"></div>
+            </div>
+        </div>
+        <div class="card" data-title="Naija DC" data-description="This project is inspired by superman, but i went creative here, i imagine a scenario where the citizens are not too happy, and the Super Family came to settle the disputes as heroes. this project is a Sky Color changer that randomizes with the name of the color, present in the background.">
+            <div class="image">
+                <img src="nep.png" />
+                <div class="reflection" style="--image: url(nep.png)"></div>
+            </div>
+        </div>
+        <div class="card" data-title="Smiley" data-description="This project is a funny one but also fun, it is a bot that once click its hand, then it smiles, and it has the ability to follow your cursor movements. i have more plans for smiley but this project was fun making. I still have used for it later on in the future, coming soon">
+            <div class="image">
+                <img src="pag.jpg" />
+                <div class="reflection" style="--image: url(pag.jpg)"></div>
+            </div>
+        </div>
+        <div class="card" data-title="Echoes of Destiny" data-description="This project is inspired by Game of thrones, Lord of the rings, Hobbits, and Merlin. I went too creative, this project is a fandom that talk about the characters, i wish i have my own movie production set for the world to see. This project acts as a fandom where user can find more details about their favourite characters like WIKI. with mesmerizing background, user will be hooked to stay and find out more">
+            <div class="image">
+                <img src="gro.png" />
+                <div class="reflection" style="--image: url(gro.png)"></div>
+            </div>
+        </div>
+        <div class="card" data-title="Rozolt: Get ready zoltquizzor" data-description="This project is a quiz game. i came up with a theme called Rozolt, a sprinter Bot, it is a funny quiz, i made for fun, so anyone can have a sweet laugh, without a doubt you will rack your head, but it is too funny, and i intend to make you to smile and laugh while playing, and the people who tried love the game.">
+            <div class="image">
+                <img src="ron.png" />
+                <div class="reflection" style="--image: url(ron.png)"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const imgSrc = card.querySelector('img').src;
+                const title = card.dataset.title || 'Untitled';
+                const description = card.dataset.description || 'No description available.';
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'fullscreen-overlay';
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'close-button';
+                closeBtn.innerHTML = '×';
+                
+                const infoBox = document.createElement('div');
+                infoBox.className = 'info-box';
+                infoBox.innerHTML = `
+                    <h2>${title}</h2>
+                    <p>${description}</p>
+                `;
+                
+                const fullImg = document.createElement('img');
+                fullImg.src = imgSrc;
+                fullImg.alt = title;
+                
+                overlay.appendChild(closeBtn);
+                overlay.appendChild(infoBox);
+                overlay.appendChild(fullImg);
+                document.body.appendChild(overlay);
+                
+                // Prevent body scrolling when overlay is open
+                document.body.style.overflow = 'hidden';
+                
+                requestAnimationFrame(() => {
+                    overlay.classList.add('active');
+                    infoBox.classList.add('active');
+                });
+
+                const closeOverlay = () => {
+                    overlay.classList.add('closing');
+                    overlay.classList.remove('active');
+                    infoBox.classList.remove('active');
+                    document.body.style.overflow = '';
+                    setTimeout(() => overlay.remove(), 400);
+                };
+
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    closeOverlay();
+                });
+
+                fullImg.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent double-triggering with overlay click
+                    closeOverlay();
+                });
+
+                // Add cursor pointer to indicate clickable image
+                fullImg.style.cursor = 'pointer';
+            });
+        });
+    </script>
+</body>
+</html>

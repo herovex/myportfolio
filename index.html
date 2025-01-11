@@ -3,63 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java git 1st</title>
+    <title>My Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #4f1359;
+            background-image:
+                repeating-linear-gradient(
+                    to right, transparent 0 100px,
+                    #25283b22 100px 101px
+                ),
+                repeating-linear-gradient(
+                    to bottom, transparent 0 100px,
+                    #25283b22 100px 101px
+                );
+        }
+        
+        body::before {
+            position: absolute;
+            width: min(1400px, 90vw);
+            top: 10%;
+            left: 50%;
+            height: 90%;
+            transform: translateX(-50%);
+            content: '';
+            background-image: url(images/bg.png);
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: top center;
+            pointer-events: none;
+        }
+        
+        @import url('https://fonts.cdnfonts.com/css/ica-rubrik-black');
+        @import url('https://fonts.cdnfonts.com/css/poppins');
+
+        .banner {
+            width: 100%;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .banner .slider {
+            position: absolute;
+            width: 200px;
+            height: 250px;
+            top: 10%;
+            left: calc(50% - 100px);
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            animation: autoRun 20s linear infinite;
+            z-index: 2;
+        }
+        @keyframes autoRun {
+            from {
+                transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);
+            }
+            to {
+                transform: perspective(1000px) rotateX(-16deg) rotateY(360deg);
+            }
+        }
+
+        .banner .slider .item {
+            position: absolute;
+            inset: 0 0 0 0;
+            transform: 
+                rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+                translateZ(550px)
+                scale(1);
+            padding: 8px;
+            background: linear-gradient(45deg, #ff006e, #3a86ff);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        .banner .slider .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .banner .slider .item:hover {
+            background: linear-gradient(45deg, #3a86ff, #ff006e);
+            transform: 
+                rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+                translateZ(570px)
+                scale(1.1)
+                rotate(5deg);
+            transition: all 0.3s ease-in-out;
+        }
+        .banner .slider .item.bounce {
+            animation: none;
+        }
+        @keyframes bounceEffect {
+            /* Remove this entire keyframe */
+        }
+        .banner .content {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(1400px, 100vw);
+            height: max-content;
+            padding-bottom: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+        }
+        .banner .content h1 {
+            font-family: 'ICA Rubrik';
+            font-size: 16em;
+            line-height: 1em;
+            color: #25283B;
+            position: relative;
+        }
+        .banner .content h1::after {
+            position: absolute;
+            inset: 0 0 0 0;
+            content: attr(data-content);
+            z-index: 2;
+            -webkit-text-stroke: 2px #d2d2d2;
+            color: transparent;
+        }
+        .banner .content .author {
+            font-family: Poppins;
+            text-align: right;
+            max-width: 200px;
+            color: #fff;
+        }
+        .banner .content h2 {
+            font-size: 3em;
+        }
+        .banner .content .model {
+            background-image: url(images/model.png);
+            width: 100%;
+            height: 75vh;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-size: auto 130%;
+            background-repeat: no-repeat;
+            background-position: top center;
+            z-index: 1;
+        }
+
+        /* Button Styles */
+        .banner .content .buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 3;
+        }
+        .banner .content .buttons button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background-color: #25283B;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .banner .content .buttons button:hover {
+            background-color: purple;
+        }
+
+        @media screen and (max-width: 1023px) {
+            .banner .slider {
+                width: 160px;
+                height: 200px;
+                left: calc(50% - 80px);
+            }
+            .banner .slider .item {
+                transform: 
+                    rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+                    translateZ(300px);
+            }
+            .banner .content h1 {
+                text-align: center;
+                width: 100%;
+                text-shadow: 0 10px 20px #000;
+                font-size: 7em;
+            }
+            .banner .content .author {
+                color: #fff;
+                padding: 20px;
+                text-shadow: 0 10px 20px #000;
+                z-index: 2;
+                max-width: unset;
+                width: 100%;
+                text-align: center;
+                padding: 0 30px;
+            }
+            .banner .content .buttons {
+                bottom: 10px;
+                flex-direction: row;
+                gap: 10px;
+            }
+            .banner .content .buttons button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+            @keyframes bounceEffect {
+                0% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px); }
+                50% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(350px); }
+                100% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px); }
+            }
+        }
+        @media screen and (max-width: 767px) {
+            .banner .slider {
+                width: 100px;
+                height: 150px;
+                left: calc(50% - 50px);
+            }
+            .banner .slider .item {
+                transform: 
+                    rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+                    translateZ(180px);
+            }
+            .banner .content h1 {
+                font-size: 5em;
+            }
+            .banner .content .buttons {
+                bottom: 5px;
+                gap: 5px;
+            }
+            .banner .content .buttons button {
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #4f1359;
+            z-index: 1000;
+            cursor: pointer;
+            transition: transform 1s ease-in-out;
+        }
+
+        .overlay img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        .overlay.hide {
+            transform: translateY(-100%);
+        }
+    </style>
 </head>
-<script src="classjs.js"></script>
-<body style="background-color:yellow;">
-    <h1>Git practice</h1>
-    <h3>Git Command</h3>
-<ol>
-    <li>Git diff</li>
-    <li>Git Log</li>
-    <li>Git Branch</li>
-    <li>Git Log --oneline</li>
-</ol>
-<!-- <script>
-    PROMPT GUESS NUMBER
-   let guess= prompt("Guess the number if you can")
-    if (guess==20){
-        console.log("you guess correct")
-    }
-    else{
-        console.log("you guess wrong")
-    }
-PROMPT EVEN USING WHILE LOOP
-    // j = (Number(prompt("enter a number: "))) 
-// var result = j * 2;
-// switch (result)
-// {
-//     case (0):
-//         break;
-//     case (1):
-// console.log ("Even");
-//         break;
-//     default:
-//         console.log("Not a num")
-//         break;
-// }
+<body>
+    <div class="overlay">
+        <img src="images/Click.png" alt="Click to enter">
+    </div>
 
-PRINTOUT FOR EVEN ODD
-// for (let i = 1; i <= 7; i++) {
-//     let row = "";
-//     for (let j = 1; j <= i; j++) {
-//         row += "#";
-//     }
-//     console.log(row);
-// }
-TIMES OF A TABLE
-// for (var i = 1; i <= 12; i++) {
-//     console.log("2 X " + i + " = " + 2*i)
-// }
-// let guess = prompt("type any number from 3 to 8 to display it's multiples ");
+    <div class="banner">
+        <div class="slider" style="--quantity: 10">
+            <div class="item" style="--position: 1"><img src="images/dragon_1.jpg" alt=""></div>
+            <div class="item" style="--position: 2"><img src="images/dragon_2.jpg" alt=""></div>
+            <div class="item" style="--position: 3"><img src="images/dragon_3.png" alt=""></div>
+            <div class="item" style="--position: 4"><img src="images/dragon_4.jpg" alt=""></div>
+            <div class="item" style="--position: 5"><img src="images/dragon_5.png" alt=""></div>
+            <div class="item" style="--position: 6"><img src="images/dragon_6.jpg" alt=""></div>
+            <div class="item" style="--position: 7"><img src="images/dragon_7.png" alt=""></div>
+            <div class="item" style="--position: 8"><img src="images/dragon_8.jpg" alt=""></div>
+            <div class="item" style="--position: 9"><img src="images/dragon_9.jpg" alt=""></div>
+            <div class="item" style="--position: 10"><img src="images/dragon_10.jpg" alt=""></div>
+        </div>
+        <div class="content">
+            <h1 data-content="EMUH VICTOR">
+                EMUH VICTOR
+            </h1>
+            <div class="author">
+                <h2>WEB DEV</h2>
+                <p><b>AND UI/UX DESIGNER</b></p>
+                <p>
+                I am a Web Developer and UI/UX Designer passionate about creating seamless digital experiences. view my projects and let me know your thoughts!</p>
+            </div>
+            <div class="buttons">
+                <a href="main/scrool/dex.html">
+                    <button>Featured Projects</button>
+                </a>
+                <a href="main/Vickstar/port.html">
+                    <button>Profile</button>
+                </a>
+                <a href="main/nep/finf.html">
+                    <button>Creative Explorations</button>
+                </a>
+            </div>
+            <div class="model"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelector('.overlay').addEventListener('click', function() {
+            this.classList.add('hide');
+        });
 
-// for (var i = 1; i <= 12; i++) {
-//     console.log(guess +" X " + i + " = " + guess*i)
-// }
-
-
-</script> -->
-
-
+        document.querySelectorAll('.slider .item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.slider .item').forEach(i => {
+                    i.classList.remove('bounce');
+                });
+                
+                this.classList.add('bounce');
+                
+                setTimeout(() => {
+                    this.classList.remove('bounce');
+                }, 500);
+            });
+        });
+    </script>
 </body>
 </html>

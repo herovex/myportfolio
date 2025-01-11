@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+</head>
+<style>
+    :root {
+    --purple-50: rgb(250, 245, 255);
+    --purple-100: rgb(243, 232, 255);
+    --purple-200: rgb(233, 213, 255);
+    --purple-300: rgb(216, 180, 254);
+    --purple-400: rgb(192, 132, 252);
+    --purple-500: rgb(168, 85, 247);
+    --purple-600: rgb(147, 51, 234);
+    --purple-700: rgb(126, 34, 206);
+    --purple-800: rgb(107, 33, 168);
+    --purple-900: rgb(88, 28, 135);
+    --purple-950: rgb(59, 7, 100);
+    --card-height: 300px;
+    --card-width: calc(var(--card-height) / 1.5);
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(to bottom right, var(--purple-950), var(--purple-900), rgb(49, 46, 129));
+    min-height: 100vh;
+    color: white;
+    padding: 2rem;
+}
+.container {
+    max-width: 1152px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.header h1 {
+    font-size: 1.875rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+.header-line {
+    width: 6rem;
+    height: 0.25rem;
+    background-color: var(--purple-400);
+    margin: 0 auto;
+    border-radius: 9999px;
+}
+.card {
+    background-color: rgba(59, 7, 100, 0.5);
+    backdrop-filter: blur(8px);
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+@media (min-width: 768px) {
+    .card {
+        flex-direction: row;
+    }
+}
+.profile-section {
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(107, 33, 168, 0.5), rgba(88, 28, 135, 0.5));
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+@media (min-width: 768px) {
+    .profile-section {
+        width: 40%;
+    }
+}
+.background-orbs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+}
+.orb-1 {
+    top: 2.5rem;
+    left: 2.5rem;
+    width: 8rem;
+    height: 8rem;
+    background-color: rgba(192, 132, 252, 0.1);
+}
+.orb-2 {
+    bottom: 2.5rem;
+    right: 2.5rem;
+    width: 10rem;
+    height: 10rem;
+    background-color: rgba(129, 140, 248, 0.1);
+}
+.profile-content {
+    position: relative;
+    z-index: 1;
+}
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.profile-image-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: var(--card-width);
+    height: var(--card-height);
+    perspective: 2500px;
+}
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10%;
+    border: 2px solid rgba(192, 132, 252, 0.5);
+    position: relative;
+    z-index: 2;
+    transition: transform 0.5s;
+}
+.profile-image-wrapper:hover .profile-image {
+    transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+}
+.profile-image-wrapper::before,
+.profile-image-wrapper::after {
+    content: "";
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    transition: all 0.5s;
+    position: absolute;
+    left: 0;
+}
+.profile-image-wrapper::before {
+    top: 0;
+    height: 100%;
+    background-image: linear-gradient(
+        to top,
+        transparent 46%,
+        rgba(12, 13, 19, 0.5) 68%,
+        rgba(12, 13, 19) 97%
+    );
+}
+.profile-image-wrapper::after {
+    bottom: 0;
+    opacity: 1;
+    background-image: linear-gradient(
+        to bottom,
+        transparent 46%,
+        rgba(12, 13, 19, 0.5) 68%,
+        rgba(12, 13, 19) 97%
+    );
+}
+.profile-image-wrapper:hover::before,
+.profile-image-wrapper:hover::after {
+    opacity: 1;
+}
+.profile-image-wrapper:hover::after {
+    height: 120px;
+}
+.profile-character {
+    width: 69%;
+    opacity: 0;
+    transition: all 0.8s ease-in-out; /* Smoother and slower transition */
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: 100%; /* Start below the visible area */
+    transform: translateX(-50%) translateY(0%) translateZ(0); /* Initial position */
+}
+.profile-image-wrapper:hover .profile-character {
+    opacity: 1;
+    top: 19%; /* Move up to the desired position */
+    transform: translateX(-50%) translateY(-30%) translateZ(100px); /* Final position */
+}
+.profile-title {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.profile-title h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: rgb(243, 232, 255);
+}
+.profile-title p {
+    font-size: 1.25rem;
+    color: rgba(243, 232, 255, 0.8);
+}
+.profile-details {
+    margin-bottom: 2rem;
+}
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(192, 132, 252, 0.2);
+}
+.detail-row span:first-child {
+    color: rgb(216, 180, 254);
+}
+.tags-section {
+    margin-top: 2rem;
+}
+.tags-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+.tag, .product-tag {
+    background-color: rgba(192, 132, 252, 0.1);
+    color: rgb(243, 232, 255);
+    padding: 1.10rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    border: 1px solid rgba(192, 132, 252, 0.2);
+    transition: background-color 0.3s;
+    margin: 0.5rem;
+}
+.tag:hover, .product-tag:hover {
+    background-color: rgba(192, 132, 252, 0.2);
+}
+.product-tag {
+    background: linear-gradient(to right, rgba(168, 85, 247, 0.1), rgba(129, 140, 248, 0.1));
+}
+.content-section {
+    width: 100%;
+    padding: 2rem;
+    background-color: rgba(59, 7, 100, 0.3);
+}
+@media (min-width: 768px) {
+    .content-section {
+        width: 60%;
+    }
+}
+.name-title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 3rem;
+    background: linear-gradient(to right, var(--purple-400), rgb(129, 140, 248));
+    -webkit-background-clip: text;
+    color: transparent;
+}
+.content-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+.content-block {
+    position: relative;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background-color: rgba(59, 7, 100, 0.5);
+    transition: background-color 0.3s;
+}
+.content-block:hover {
+    background-color: rgba(88, 28, 135, 0.2);
+}
+.content-block::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(to right, rgba(192, 132, 252, 0.2), rgba(129, 140, 248, 0.2));
+    border-radius: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: -1;
+}
+.content-block:hover::before {
+    opacity: 1;
+}
+.content-block h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: rgb(243, 232, 255);
+}
+.content-block p {
+    color: rgba(243, 232, 255, 0.9);
+    line-height: 1.625;
+}
+.content-block ul {
+    list-style: none;
+    color: rgba(243, 232, 255, 0.9);
+}
+.content-block li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+.content-block li::before {
+    content: '';
+    width: 0.375rem;
+    height: 0.375rem;
+    background-color: var(--purple-400);
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    margin-top: 0.625rem;
+    flex-shrink: 0;
+}
+.social-link {
+    color: inherit;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+    color: #00ff00;
+}
+</style>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PROFILE</h1>
+            <div class="header-line"></div>
+        </div>
+
+        <div class="card">
+            <div class="profile-section">
+                <div class="background-orbs">
+                    <div class="orb orb-1"></div>
+                    <div class="orb orb-2"></div>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-header">
+                        <div class="profile-image-wrapper">
+                            <img src="un.png" alt="Profile" class="profile-image">
+                            <img src="model.png" alt="Character" class="profile-character">
+                        </div>
+                        <div class="profile-title">
+                            <h2>MR. EMUH VICTOR</h2>
+                            <p>Aspiring Versatile Web Developer and UI/UX designer</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="detail-row">
+                            <span>Age:</span>
+                            <span>21</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Education:</span>
+                            <span>National Diploma in Computer Science</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Occupation:</span>
+                            <span>Web Developer and UI/UX Designer</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Relationship:</span>
+                            <span>Single</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Contact:</span>
+                            <span><a href="http://wa.me/+2349065197086" class="social-link">09065197086</a></span>
+                        </div>
+                        <div class="detail-row">
+                            <span>TikTok:</span>
+                            <span><a href="https://www.tiktok.com/@supervictor.55?_t=ZM-8syT4c6yGV4&_r=1" class="social-link">@supervictor.55</a></span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Instagram:</span>
+                            <span><a href="https://www.instagram.com/theillustriouslordenvision?igsh=bjhpYmg5bzczczdh" class="social-link">@theillustriouslordenvision</a></span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Programming Skills:</span>
+                            <span>HTML,CSS,BOOTSTRAP,<br>JQUERY,JS,<BR>PHP&MYSQL, UI/UX</BR></span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Location:</span>
+                            <span>Edo, Benin City</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Certification:</span>
+                            <span>CCT certification: Completion in web design and development. <br>Completion in UI/UX design and Prototyping</span>
+                        </div>
+                    </div>
+
+                    <div class="tags-section">
+                        <div class="tags-group">
+                            <span class="tag">Research</span>
+                            <span class="tag">Work Done</span>
+                            <span class="tag">Fast</span>
+                        </div>
+                        <h3>Favourite Hobbies</h3>
+                        <div class="products-group">
+                            <span class="product-tag">Clean Environment</span>
+                            <span class="product-tag">Coding and learning</span>
+                            <span class="product-tag">AI Enthusiast</span>
+                            <span class="product-tag">Working out</span>
+                            <span class="product-tag">Eating healthy meals</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="name-title">Victor Emuh</h2>
+                <div class="content-blocks">
+                    <section class="content-block">
+                        <h3>STORY</h3>
+                        <p>
+                            Hello, my name is Victor Emuh, and I appreciate you taking the time to learn more about me. Like many students, I'm eager to learn, grow, and gain valuable experience to become self-reliant. I graduated from Ogunbor Group of Schools, successfully passing my WAEC exams. Initially, I aspired to become a doctor, but due to financial constraints, I opted for computer science. In 2019 I spent a year at Complete Computers Technologies, a Private IT Institution in Benin, where I transitioned from being a computer novice to someone proficient in typing, browsing, and conducting research. I then ventured into web design, mastering HTML, CSS, Bootstrap, and jQuery, before diving into backend development with PHP and MySQL. Despite challenges, my peers and I embraced these concepts, becoming adept at both front-end and back-end coding. Afterward, I attended G-Brains and attempted the JAMB exam, but couldn't enroll at the University of Benin due to the adjustment of scores that year. Instead, I chose Delta State Polytechnic, Otefe-Oghara, where I studied computer science for two years, developing a full-stack payroll software independently.
+After graduating in 2023, I dedicated a year to enhancing my skills in UI/UX design and JavaScript. I have consistently engaged in coding, designing, case studies, and problem-solving projects. I am proficient in using hosting services to bring websites online. My portfolio showcases my web development and UI/UX skills, aimed at attracting potential employers, companies, or teams. It reflects my life, dedication, and enthusiasm for learning and creating web applications that solve problems for businesses and individuals. You can also view my UI designs on Behance, with more projects on the way. Thank you for your time and consideration..
+                        </p>
+                    </section>
+
+                    <section class="content-block">
+                        <h3>Goals</h3>
+                        <ul>
+                            <li>Career Advancement: I aim to secure a position in the field of web development, particularly in full-stack development, where I can utilize my skills in both front-end and back-end technologies.</li>
+                            <li>Continuous Learning: I am committed to continuously improving my skills in UI/UX design, JavaScript, and other related technologies to stay competitive in the industry.</li>
+                            <li>Entrepreneurship: I may be interested in starting my own web development or software development business, leveraging my experience in creating full-stack applications and my understanding of hosting services.</li>
+                            <li>Professional Recognition: I seek to gain recognition in the industry through my portfolio, case studies, and possibly through contributions to open-source projects or participation in design and development communities.</li>
+                            <li>Financial Independence: By mastering my craft and building a successful career, I aim to achieve financial independence, which was a motivating factor in my decision to pursue computer science over medicine.</li>
+                            <li>Problem Solving: I am driven by the desire to create web applications that solve real-world problems for businesses and individuals, indicating a goal of making a meaningful impact through my work.</li>
+                            <li>Academic Pursuits: Although I faced challenges with my university enrollment, I may still have a goal of furthering my education, possibly through online courses, certifications, or eventually pursuing a degree in a related field.</li>
+                            <li>Networking and Collaboration: I aim to connect with other professionals, companies, or teams that can offer opportunities for collaboration and growth in my career.</li>
+                        </ul>
+                    </section>
+
+                    <section class="content-block">
+                        <h3>Education Background</h3>
+                        <ul>
+                            <li>Ogunbor Group of school: 2017-2019 </li>
+                            <li>Delta State Polytechnic Otefe-Oghara: 2021-2023</li>
+                            <li>Complete Computers Technologies Limited: 2020-2024</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
