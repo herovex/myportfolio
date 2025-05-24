@@ -2,22 +2,22 @@ document.querySelector('.overlay').addEventListener('click', function() {
     this.classList.add('hide');
 });
 
-/*
 document.querySelectorAll('.slider .item').forEach(item => {
     item.addEventListener('click', function() {
+        // Optional: Remove bounce from all other items if only one should bounce
         document.querySelectorAll('.slider .item').forEach(i => {
-            i.classList.remove('bounce');
+            if (i !== this) i.classList.remove('bounce'); 
         });
         
-        // this.classList.add('bounce');
+        this.classList.add('bounce');
         
-        // setTimeout(() => {
-        //     this.classList.remove('bounce');
-        // }, 500);
+        setTimeout(() => {
+            this.classList.remove('bounce');
+        }, 500); // Or original timeout
     });
 });
-*/
 
+/*
 const slider = document.querySelector('.slider');
 const track = document.querySelector('.slider-track');
 const items = document.querySelectorAll('.slider .item');
@@ -54,3 +54,4 @@ if (track && items.length > 0 && nextBtn && prevBtn) { // Ensure all crucial ele
     // Initialize
     updateSliderPosition();
 }
+*/
