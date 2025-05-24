@@ -13,268 +13,338 @@ body {
   width: 100%;
   height: 100%;
   background: #f5f5f5;
+  overflow: hidden; /* Keep this on container if .project-slider is 100vw/vh */
+}
+
+.project-slider { /* Renamed from .slide, new styles */
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
 }
 
 .item {
-  width: 165px;
-  height: 250px;
   position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  border-radius: 20px;
-  background-position: 50% 50%;
-  background-size: cover;
-  background-color: #151212;
-  display: inline-block;
-  transition: all 0.5s ease-in-out; /* Adjusted transition */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Added box-shadow */
-}
-
-.item:nth-child(1),
-.item:nth-child(2) {
   top: 0;
   left: 0;
-  transform: translate(0, 0);
-  border-radius: 0;
   width: 100%;
   height: 100%;
-}
-
-.item:nth-child(3) {
-  left: 70%;
-}
-
-.item:nth-child(4) {
-  left: calc(70% + 210px);
-}
-
-.item:nth-child(5) {
-  left: calc(80% + 430px);
-}
-
-.item:nth-child(n + 6) {
-  left: calc(80% + 650px);
+  background-size: cover;
+  background-position: center;
+  /* Initial state for non-active slides */
   opacity: 0;
+  transform: translateX(100%); /* Start off-screen to the right */
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out, visibility 0s linear 0.7s;
+  visibility: hidden;
+  background-image: none !important; /* Remove from main item if using ::before */
+  transform-origin: center center; /* For scale animation */
 }
 
-.content {
-  position: absolute;
-  top: 70%;
-  left: 20px;
-  width: 300px;
-  text-align: left;
-  color: #eee;
-  transform: translateY(-40%);
-  font-family: "H7GBK-Heavy";
-  display: none;
-  /* Styles for text protection scrim - applied when content is visible */
-  background-color: rgba(0,0,0,0.5); /* Scrim background */
-  padding: 20px; /* Padding for the content block */
-  border-radius: 10px; /* Rounded corners for the scrim */
-  box-sizing: border-box; /* Ensure padding doesn't add to width/height */
-  width: calc(100% - 40px); /* Adjust width considering left: 20px and padding */
-  /* top, left, transform already set */
-}
-
-.item:nth-child(2) .content {
-  display: block;
-}
-
-.content .name {
-  font-size: 45px;
-  text-transform: uppercase;
-  font-weight: 400;
+.item.prev-slide {
   opacity: 0;
-  animation: animate 1s ease-in-out 1 forwards;
-  background: linear-gradient(90deg, gold, rgb(216, 8, 136));
-  -webkit-background-clip: text;
-  color: transparent;
-  position: relative;
-  cursor: pointer;
-  text-decoration: none;
-  border: 2px solid transparent;
-  border-image: linear-gradient(90deg, gold, rgb(216, 8, 136)) 1;
-  padding: 3px 15px;
-  margin: 0 auto;
-  display: inline-block;
-  z-index: 1;
-  transition: all 0.3s ease-in-out, text-shadow 0.3s ease-in-out, letter-spacing 0.3s ease-in-out; /* Added text-shadow and letter-spacing to transition */
+  transform: translateX(-100%); /* Slide out to the left */
+  visibility: hidden;
+  /* transition is same as .item, no need to repeat if it is */
 }
 
-/* Removed .content .name::before, .content .name::after */
-/* Removed @keyframes shine, @keyframes dimLight */
-
-.content .des {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  font-size: 16px;
-  font-weight: 300; /* Adjusted font-weight from 100 to 300 */
-  opacity: 0;
-  animation: animate 1s ease-in-out 0.3s 1 forwards;
-  color: gold;
+.item::before { /* For Ken Burns effect */
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: inherit; /* Inherit from parent's style attribute */
+    background-size: cover;
+    background-position: center;
+    transform-origin: center center;
+    z-index: -1; /* Place behind content */
 }
 
-@keyframes animate {
-  from {
-    opacity: 0;
-    transform: translate(0, 100px);
-    filter: blur(33px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate(0);
-    filter: blur(0);
-  }
+@keyframes kenBurns {
+    0% {
+        transform: scale(1) translate(0,0);
+    }
+    100% {
+        transform: scale(1.1) translate(-2%, 2%); /* Subtle zoom and pan */
+    }
 }
 
-.buttons {
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  bottom: 60px;
+.item.active {
+  opacity: 1;
+  transform: translateX(0); /* Active slide is centered */
+  visibility: visible;
+  transition-delay: 0s; /* Ensure it animates in immediately */
+}
+.item.active::before {
+  animation: kenBurns 15s infinite alternate ease-in-out;
 }
 
-button {
-  width: 60px; /* Adjusted width */
-  height: 60px; /* Adjusted height */
-  border-radius: 50%; /* Circular buttons */
-  border: none;
-  background-image: none; /* Removed background image */
-  background-color: #25283B; /* Set background color */
-  color: white; /* Set text color */
-  font-size: 1.5em; /* Set font size for arrows */
-  line-height: 1; /* Center arrow vertically */
-  display: flex; /* For centering content */
-  align-items: center; /* Center content vertically */
-  justify-content: center; /* Center content horizontally */
-  margin-inline: 20px;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform to transition */
-}
 
-button:hover {
-  background-color: #3a3f5c; /* Slightly lighter on hover */
-  transform: scale(1.1); /* Slight scale on hover */
-}
+/* Remove old :nth-child positioning rules */
+/*
+.item:nth-child(1),
+.item:nth-child(2) { ... }
+.item:nth-child(3) { ... }
+.item:nth-child(4) { ... }
+.item:nth-child(5) { ... }
+.item:nth-child(n + 6) { ... }
+*/
 
-button:active {
-  background-color: #1c1e2a; /* Darker on active */
-  transform: scale(1.0); /* Reset scale or slightly smaller */
-}
-
-.next {
-  /* background-image: none; */ /* Already handled by general button style */
-}
-
-@media (max-width: 1024px) { /* Tablet adjustments */
-  .item:nth-child(3) {
-    left: 65%;
-  }
-  .item:nth-child(4) {
-    left: calc(65% + 180px); /* Reduced from 210px */
-  }
-  .item:nth-child(n + 5) { /* Hide 5th item onwards, previously n+6 */
-    left: calc(65% + 360px); /* Adjusted for new base */
-    opacity: 0;
-  }
-  .content {
-    width: calc(100% - 30px); /* Adjust width for smaller main item */
-    left: 15px;
-    top: 65%; /* Slightly adjust vertical position */
-  }
-  .content .name {
-    font-size: 35px; /* Reduce font size */
-  }
-  .content .des {
-    font-size: 14px; /* Reduce font size */
-  }
-  .buttons {
-    bottom: 30px; /* Adjust button position */
-  }
-  button {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2em;
-  }
-}
-
-@media (max-width: 767px) { /* Mobile adjustments - Vertical Stack */
-  .container {
-    overflow-y: auto; /* Allow vertical scrolling for the page */
-    height: auto; /* Allow body to grow */
-  }
-  body {
-    height: auto; /* Allow body to grow */
-  }
-  .slide {
-    height: auto; /* Allow slide container to grow */
-    display: flex; /* Use flex for column layout */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-  }
-  .item,
-  .item:nth-child(1),
-  .item:nth-child(2),
-  .item:nth-child(3),
-  .item:nth-child(4),
-  .item:nth-child(5),
-  .item:nth-child(n + 6) { /* Apply to all items */
-    position: relative !important;
-    width: 90% !important;
-    height: 300px !important; /* Fixed height for cards, or use aspect-ratio/min-height */
-    margin: 20px auto !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    opacity: 1 !important;
-    border-radius: 20px !important; /* Consistent border-radius */
-    background-size: cover; /* Ensure background covers the item */
-    background-position: center; /* Center the background image */
-  }
-
-  .item:nth-child(2) .content { /* This rule still makes content visible for the 'active' item */
-    display: block;
-  }
-  .content { /* General content adjustments for vertical cards */
-    position: absolute; /* Position content within the item */
-    bottom: 0; /* Align to bottom */
-    left: 0; /* Align to left */
-    width: 100%; /* Full width of parent item */
-    transform: none; /* Reset transform */
-    background-color: rgba(0,0,0,0.7); /* Darker scrim for better readability */
-    border-radius: 0 0 20px 20px; /* Match item's bottom radius */
-    top: auto; /* Override previous top */
-    padding: 15px; /* Adjust padding */
+.item .content { /* Updated styles */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.65) 60%, rgba(0,0,0,0) 100%);
+    color: #fff;
+    padding: 80px 60px 40px 60px;
     box-sizing: border-box;
-    height: auto; /* Content defines its own height */
-    color: #f0f0f0; /* Lighter text color for better contrast on dark scrim */
-  }
-  .content .name {
-    font-size: 28px; /* Adjust font size */
-    margin-bottom: 5px; /* Space below name */
-    padding: 2px 10px; /* Adjust padding */
-  }
-  .content .des {
-    font-size: 13px; /* Adjust font size */
-    margin-bottom: 10px; /* Space below description */
-    color: #e0e0e0; /* Slightly dimmer than name */
-  }
-  .buttons { /* Next/Prev buttons container */
-    position: static; /* No longer absolute */
-    margin: 30px auto; /* Space around buttons */
-    bottom: auto; /* Reset bottom */
+    font-family: "H7GBK-Heavy", sans-serif; /* Apply base font to content area */
+    text-align: left;
+    /* Resetting other properties that might conflict from old .content */
+    top: auto;
+    /* transform: none; */ /* Keep for base, active will override */
+    display: block; 
+    opacity: 0; /* Initial state for content animation */
+    transform: translateY(50px); /* Start slightly below */
+    transition: opacity 0.6s ease-out 0.5s, transform 0.6s ease-out 0.5s; /* Delay allows slide to come in first */
+}
+
+.item.active .content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Remove .item:nth-child(2) .content rule, as .active class handles visibility now */
+
+.item .content .name { /* Updated styles */
+    font-family: "H7GBK-Heavy", sans-serif;
+    font-size: 2.5em; 
+    color: #FFD700; /* Gold color */
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 15px;
+    border: 2px solid transparent; /* Remove old border image */
+    background: none; 
+    -webkit-background-clip: unset; 
+    background-clip: unset;
+    transition: color 0.3s ease, transform 0.3s ease;
+    /* Resetting properties from old .content .name */
+    opacity: 1; /* Should be visible */
+    animation: none; /* Remove old animation */
+    text-transform: none; /* Remove uppercase if not desired */
+    font-weight: normal; /* Use font's own weight */
+    padding: 0; /* Reset padding */
+    margin: 0 0 15px 0; /* Adjust margin */
+    z-index: auto; /* Reset z-index */
+}
+
+.item .content .name:hover { /* Updated styles */
+    color: #fff;
+    transform: translateX(5px);
+    /* Remove old hover effects like text-shadow, letter-spacing, background, border-image */
+    text-shadow: none;
+    letter-spacing: normal;
+}
+
+/* Removed .content .name::before, .content .name::after and their hover states */
+/* Removed @keyframes shine, @keyframes dimLight, @keyframes pulseGlow */
+
+.item .content .des { /* Updated styles */
+    font-family: Arial, sans-serif; 
+    font-size: 1em; 
+    line-height: 1.6;
+    color: #f0f0f0;
+    max-width: 700px;
+    /* Resetting properties from old .content .des */
+    opacity: 1; /* Should be visible */
+    animation: none; /* Remove old animation */
+    font-weight: normal; /* Use font's own weight or specify e.g. 400 */
+}
+
+/* Remove @keyframes animate - will be re-evaluated in 3.4 */
+
+/* Remove old .buttons container styles */
+.buttons {
+    /* All previous styles for .buttons container are removed/overridden by individual button positioning */
+    /* Ensure any conflicting styles are gone */
+    position: static; /* Reset position if it was fixed/absolute */
+    bottom: auto;
+    left: auto;
+    transform: none;
+    z-index: auto;
+    text-align: initial;
+    width: auto;
+}
+
+.buttons .prev, .buttons .next { /* Shared styles for new fixed side buttons */
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    background-color: rgba(0,0,0,0.3);
+    color: white;
+    border: none;
+    border-radius: 50%; /* Keep them circular */
+    width: 50px; /* Adjust size */
+    height: 50px;
+    font-size: 24px; /* Adjust arrow size */
+    line-height: 50px; /* Center arrow vertically */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    /* Remove margin-inline from general button if it was there */
+    margin-inline: 0; 
+    display: flex; /* Ensure flex properties for centering if needed */
+    align-items: center;
+    justify-content: center;
+}
+/* Specific positioning for prev and next */
+.buttons .prev {
+    left: 30px;
+}
+.buttons .next {
+    right: 30px;
+}
+
+.buttons .prev:hover, .buttons .next:hover {
+    background-color: rgba(0,0,0,0.6);
+    transform: translateY(-50%) scale(1.1); /* Keep Y transform for centering */
+}
+
+.buttons .prev:active, .buttons .next:active {
+    background-color: rgba(0,0,0,0.8); /* Example active state */
+    transform: translateY(-50%) scale(0.95); /* Keep Y transform, adjust scale */
+}
+
+
+/* Pagination Dots Styling */
+.slider-pagination {
+    position: fixed;
+    bottom: 30px; /* Adjust position */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
     display: flex;
-    justify-content: center; /* Center buttons */
-    gap: 30px; /* Space between buttons */
+    gap: 10px;
+}
+.slider-pagination .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.slider-pagination .dot.active {
+    background-color: rgba(255,255,255,0.9);
+}
+.slider-pagination .dot:hover {
+    background-color: rgba(255,255,255,0.7);
+}
+
+
+/* Remove or comment out old responsive styles that conflict with full-screen slider */
+@media (max-width: 1024px) { /* Tablet adjustments */
+  .item .content {
+    padding: 70px 50px 35px 50px;
   }
-  button { /* Next/Prev buttons themselves */
-    width: 55px;
-    height: 55px;
-    font-size: 1.4em;
+  .item .content .name {
+    font-size: 2.2em; 
+  }
+  .item .content .des {
+    font-size: 0.95em;
+    max-width: 600px; /* Adjust max-width for description */
+  }
+  .buttons .prev, .buttons .next {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    line-height: 45px; /* Ensure this matches height */
+  }
+  .buttons .prev {
+    left: 20px;
+  }
+  .buttons .next {
+    right: 20px;
+  }
+  .slider-pagination {
+    bottom: 25px;
+  }
+  .slider-pagination .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 768px) { /* Large Phones / Small Tablets */
+  .item .content { 
+    padding: 60px 40px 30px 40px; 
+  }
+  .item .content .name {
+    font-size: 2em; 
+  }
+  .item .content .des {
+    font-size: 0.9em; 
+    line-height: 1.5;
+    padding-bottom: 50px; 
+    max-width: 500px; /* Further adjust max-width */
+  }
+  .buttons .prev, .buttons .next {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    line-height: 40px; /* Ensure this matches height */
+  }
+  .buttons .prev {
+    left: 15px;
+  }
+  .buttons .next {
+    right: 15px;
+  }
+  .slider-pagination {
+    bottom: 20px; 
+  }
+  .slider-pagination .dot {
+    width: 8px;
+    height: 8px;
+    /* gap: 8px; */ /* gap is on parent .slider-pagination */
+  }
+}
+
+@media (max-width: 480px) { /* Small Mobile */
+  .item .content {
+    padding: 50px 20px 20px 20px;
+  }
+  .item .content .name {
+    font-size: 1.8em;
+  }
+  .item .content .des {
+    font-size: 0.85em;
+    line-height: 1.4;
+    padding-bottom: 60px; /* Increased for nav/pagination */
+  }
+  .buttons .prev, .buttons .next {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    line-height: 35px; /* Ensure this matches height */
+  }
+  .buttons .prev {
+    left: 10px;
+  }
+  .buttons .next {
+    right: 10px;
+  }
+  .slider-pagination {
+    bottom: 15px;
+    gap: 6px; /* Adjust gap for smaller dots */
+  }
+  .slider-pagination .dot {
+    width: 8px; /* Kept 8px as it's already small, or could go to 6px */
+    height: 8px;
+  }
+  .item.active::before {
+    animation: none; /* Disable Ken Burns effect */
+    /* transform: scale(1.05); */ /* Optional: static slight zoom */
   }
 }
 
