@@ -4,307 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Featured Projects</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<style>
-    
-@font-face {
-  font-family: "H7GBK-Heavy";
-  src: url('https://hw-media-cdn-mingchao.kurogame.com/font/H7GBK-Heavy.ttf');
-}
-
-body {
-  height: 100vh;
-  margin: 0;
-}
-
-.container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: #f5f5f5;
-  overflow: hidden;
-}
-
-.item {
-  width: 165px;
-  height: 250px;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  border-radius: 20px;
-  background-position: 50% 50%;
-  background-size: cover;
-  background-color: #151212;
-  display: inline-block;
-  transition: 0.5s;
-}
-
-.item:nth-child(1),
-.item:nth-child(2) {
-  top: 0;
-  left: 0;
-  transform: translate(0, 0);
-  border-radius: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.item:nth-child(3) {
-  left: 70%;
-}
-
-.item:nth-child(4) {
-  left: calc(70% + 210px);
-}
-
-.item:nth-child(5) {
-  left: calc(80% + 430px);
-}
-
-.item:nth-child(n + 6) {
-  left: calc(80% + 650px);
-  opacity: 0;
-}
-
-.content {
-  position: absolute;
-  top: 70%;
-  left: 20px;
-  width: 300px;
-  text-align: left;
-  color: #eee;
-  transform: translateY(-40%);
-  font-family: "H7GBK-Heavy";
-  display: none;
-}
-
-.item:nth-child(2) .content {
-  display: block;
-}
-
-.content .name {
-  font-size: 45px;
-  text-transform: uppercase;
-  font-weight: 400;
-  opacity: 0;
-  animation: animate 1s ease-in-out 1 forwards;
-  background: linear-gradient(90deg, gold, rgb(216, 8, 136));
-  -webkit-background-clip: text;
-  color: transparent;
-  position: relative;
-  cursor: pointer;
-  text-decoration: none;
-  border: 2px solid transparent;
-  border-image: linear-gradient(90deg, gold, rgb(216, 8, 136)) 1;
-  padding: 3px 15px;
-  margin: 0 auto;
-  display: inline-block;
-  z-index: 1;
-  transition: all 0.3s ease-in-out;
-}
-
-.content .name::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 6px;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(47, 235, 18, 0.8) 50%, /* Add a midpoint for smoother transition */
-    transparent
-  );
-  animation: shine 4s infinite ease-in-out; /* Add easing for smoother animation */
-  will-change: transform; /* Optimize for performance */
-}
-
-.content .name::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255,215,0,0.2), transparent 70%);
-  z-index: -1;
-  animation: dimLight 2s ease-in-out infinite;
-}
-
-@keyframes shine {
-  0% {
-    left: -40px;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  20% {
-    left: 100%;
-    opacity: 1;
-  }
-  21% {
-    opacity: 0;
-  }
-  100% {
-    left: -40px;
-    opacity: 0;
-  }
-}
-
-@keyframes dimLight {
-  0% {
-    width: 100%;
-    opacity: 0.7;
-  }
-  50% {
-    width: 150%;
-    opacity: 0.3;
-  }
-  100% {
-    width: 100%;
-    opacity: 0.7;
-  }
-}
-
-.content .des {
-  margin-top: 10px;
-  margin-bottom: 20px;
-  font-size: 16px;
-  font-weight: 100;
-  opacity: 0;
-  animation: animate 1s ease-in-out 0.3s 1 forwards;
-  color: gold;
-}
-
-@keyframes animate {
-  from {
-    opacity: 0;
-    transform: translate(0, 100px);
-    filter: blur(33px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate(0);
-    filter: blur(0);
-  }
-}
-
-.buttons {
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  bottom: 60px;
-}
-
-button {
-  width: 50px;
-  height: 40px;
-  border-radius: 8px;
-  border: none;
-  background-image: url('https://codetheworld.io/wp-content/uploads/2024/05/prev.png');
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin-inline: 20px;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.next {
-  background-image: url('https://codetheworld.io/wp-content/uploads/2024/05/next.png');
-}
-
-@media (max-width: 768px) {
-  .content {
-    left: 10px;
-    width: 80%;
-  }
-}
-
-.fullscreen-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 1000;
-    overflow-y: auto;
-}
-
-.fullscreen-image {
-    display: block;
-    max-width: 100%;
-    margin: 0 auto;
-    cursor: zoom-out;
-}
-
-/* Add these new hover effects */
-.content .name:hover {
-  transform: scale(1.05);
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-  letter-spacing: 2px;
-  background: linear-gradient(90deg, rgb(216, 8, 136), gold);
-  -webkit-background-clip: text;
-  border-image: linear-gradient(90deg, rgb(216, 8, 136), gold) 1;
-}
-
-.content .name:hover::before {
-  animation: shine 2s infinite ease-in-out;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 215, 0, 0.8) 50%,
-    transparent
-  );
-}
-
-.content .name:hover::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(216, 8, 136, 0.2), transparent 70%);
-  z-index: -1;
-  animation: pulseGlow 1s ease-in-out infinite;
-}
-
-/* Add this new animation */
-@keyframes pulseGlow {
-  0% {
-    width: 100%;
-    height: 100%;
-    opacity: 0.5;
-  }
-  50% {
-    width: 150%;
-    height: 150%;
-    opacity: 0.2;
-  }
-  100% {
-    width: 100%;
-    height: 100%;
-    opacity: 0.5;
-  }
-}
-</style>
 <body>
     
 <div class="container">
     <div class="slide">
       <div class="item" style="background-image: url(dragon_1.jpg);">
         <div class="content">
-          <a href="https://auto-turbo.netlify.app" class="name">Link</a>
+          <a href="https://auto-turbo.netlify.app" class="name">View Project</a>
           <div class="des">
 A website demo for selling and buying of cars </div>
         </div>
@@ -312,7 +20,7 @@ A website demo for selling and buying of cars </div>
   
       <div class="item" style="background-image: url(dragon_2.jpg);">
         <div class="content">
-          <a href="https://victor-e-jarvis.netlify.app" class="name">Link</a>
+          <a href="https://victor-e-jarvis.netlify.app" class="name">View Project</a>
           <div class="des">
             This is a Iron man weather application, that gives accurate information about the weather, but it is design to make you feel as if you are in one of Tony Stark suit.
           </div>
@@ -321,7 +29,7 @@ A website demo for selling and buying of cars </div>
   
       <div class="item" style="background-image: url(dragon_3.png);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216559363/Pet-Shop" class="name">Link</a>
+          <a href="https://www.behance.net/gallery/216559363/Pet-Shop" class="name">View Project</a>
           <div class="des">
             One of my first early UI/UX design, a landing page relating to animal vet, this is just the landing page and one of my old UI designs.
           </div>
@@ -330,7 +38,7 @@ A website demo for selling and buying of cars </div>
   
       <div class="item" style="background-image: url(dragon_4.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216559441/Soundbox" class="name">link</a>
+          <a href="https://www.behance.net/gallery/216559441/Soundbox" class="name">View Project</a>
           <div class="des">
             Who doesnt love music, this UI design shows a unique blend to showcase gadgets to the audience.
           </div>
@@ -339,7 +47,7 @@ A website demo for selling and buying of cars </div>
       
       <div class="item" style="background-image: url( dragon_5.png);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/202024731/Empower-wellness" class="name">link</a>
+          <a href="https://www.behance.net/gallery/202024731/Empower-wellness" class="name">View Project</a>
           <div class="des">
             A UI design and code of a health care website, reference to Healthytogether.
           </div>
@@ -347,7 +55,7 @@ A website demo for selling and buying of cars </div>
       </div>
       <div class="item" style="background-image: url( dragon_6.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216558211/Payroll_Software-UI" class="name">link</a>
+          <a href="https://www.behance.net/gallery/216558211/Payroll_Software-UI" class="name">View Project</a>
           <div class="des">
 This is my first ever full stack website, I did back in Otefe-Oghara, took me an entire month, the software works amazing, but i plan to make it better later in the future.
           </div>
@@ -356,7 +64,7 @@ This is my first ever full stack website, I did back in Otefe-Oghara, took me an
 
       <div class="item" style="background-image: url(dragon_7.png);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216577939/Iphone-UI-Store" class="name">link</a>
+          <a href="https://www.behance.net/gallery/216577939/Iphone-UI-Store" class="name">View Project</a>
           <div class="des">
 A little challenge i engage myself in, making and coding, and trying out scroll animation, the design is not too impressive like apple website, but in the future i plan to improve it.
           </div>
@@ -365,7 +73,7 @@ A little challenge i engage myself in, making and coding, and trying out scroll 
 
       <div class="item" style="background-image: url(dragon_8.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/195122063/crusinX" class="name">link</a>
+          <a href="https://www.behance.net/gallery/195122063/crusinX" class="name">View Project</a>
           <div class="des">
 This is a UI design i made, about a shopping website, i engage typography, case study, and icons I used.
           </div>
@@ -374,7 +82,7 @@ This is a UI design i made, about a shopping website, i engage typography, case 
 
       <div class="item" style="background-image: url(dragon_9.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/195023447/Crpyto-Currency-Case-Study" class="name">Link</a>
+          <a href="https://www.behance.net/gallery/195023447/Crpyto-Currency-Case-Study" class="name">View Project</a>
           <div class="des">
 This was very difficult, i had to research more on crypto, it was fun, but naviagting the space was hard.
           </div>
@@ -383,7 +91,7 @@ This was very difficult, i had to research more on crypto, it was fun, but navia
       
       <div class="item" style="background-image: url(dragon_10.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/192751265/Grove-Travels" class="name">link</a>
+          <a href="https://www.behance.net/gallery/192751265/Grove-Travels" class="name">View Project</a>
           <div class="des">
 My first ever UI project, this was what i started with to understand ui/ux and learn how to turn my designs to live projects, i still have a long way  to go, but i always presevere.
           </div>
@@ -393,7 +101,7 @@ My first ever UI project, this was what i started with to understand ui/ux and l
 
       <div class="item" style="background-image: url(dragon_11.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/194689135/Savquisite-Foundation" class="name">link</a>
+          <a href="https://www.behance.net/gallery/194689135/Savquisite-Foundation" class="name">View Project</a>
           <div class="des">
 This website is almost like Jumia, but with it is a case study that talks about every section, and how the app works, the color layout, the grif, and of course responsiveness, this project challaneg my creativity.
           </div>
@@ -402,8 +110,8 @@ This website is almost like Jumia, but with it is a case study that talks about 
     </div>
   
     <div class="buttons">
-      <button class="prev"></button>
-      <button class="next"></button>
+      <button class="prev">&#x2190;</button>
+      <button class="next">&#x2192;</button>
     </div>
   </div>
 
@@ -411,42 +119,5 @@ This website is almost like Jumia, but with it is a case study that talks about 
     <img class="fullscreen-image" src="" alt="Fullscreen view">
   </div>
 </body>
-<script>
-    const nextButton = document.querySelector('.next');
-const prevButton = document.querySelector('.prev');
-
-nextButton.addEventListener(
-  'click',
-  () => {
-    const items = document.querySelectorAll('.item');
-    document.querySelector('.slide').appendChild(items[0]);
-  },
-);
-
-prevButton.addEventListener(
-  'click',
-  () => {
-    const items = document.querySelectorAll('.item');
-    document.querySelector('.slide').prepend(items[items.length - 1]);
-  },
-);
-
-const items = document.querySelectorAll('.item');
-const overlay = document.querySelector('.fullscreen-overlay');
-const fullscreenImage = document.querySelector('.fullscreen-image');
-
-items.forEach(item => {
-    item.addEventListener('click', () => {
-        const bgImage = item.style.backgroundImage.slice(4, -1).replace(/"/g, "");
-        fullscreenImage.src = bgImage;
-        overlay.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    });
-});
-
-overlay.addEventListener('click', () => {
-    overlay.style.display = 'none';
-    document.body.style.overflow = 'auto';
-});
-</script>
+<script src="script.js"></script>
 </html>
