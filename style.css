@@ -35,83 +35,161 @@ body::before {
     width: 100%;
     height: 100vh;
     text-align: center;
-    overflow: hidden;
+    /* overflow: hidden; */ /* Let slider handle its overflow */
     position: relative;
 }
 .banner .slider {
-    position: absolute;
-    width: 200px;
-    height: 250px;
-    top: 10%;
-    left: calc(50% - 100px);
-    transform-style: preserve-3d;
-    transform: perspective(1000px);
-    animation: autoRun 40s linear infinite;
-    z-index: 2;
+    /* position: absolute; */
+    /* width: 200px; */ /* Old 3D width */
+    /* height: 250px; */ /* Old 3D height */
+    /* top: 10%; */
+    /* left: calc(50% - 100px); */
+    /* transform-style: preserve-3d; */
+    /* transform: perspective(1000px); */
+    /* animation: autoRun 40s linear infinite; */
+    z-index: 2; /* May need adjustment depending on stacking with other content */
+
+    display: flex; /* This should be on slider-track, not slider itself if slider is just a container */
+    overflow: hidden; /* Important for showing only active items */
+    width: 80%; /* Example width, can be refined */
+    margin: 20px auto; /* Center the slider */
+    height: 400px; /* Example height, can be refined */
+    position: relative; /* For positioning next/prev buttons if needed */
 }
-@keyframes autoRun {
+
+.slider-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%; /* Match the slider's height */
+    /* Width will be set by items or JS if needed */
+    position: relative; /* Ensure this is set for absolute positioning of controls */
+}
+
+/* @keyframes autoRun {
     from {
         transform: perspective(1000px) rotateX(-16deg) rotateY(0deg);
     }
     to {
         transform: perspective(1000px) rotateX(-16deg) rotateY(360deg);
     }
-}
+} */
 
 .banner .slider .item {
-    position: absolute;
-    inset: 0 0 0 0;
-    transform: 
+    /* position: absolute; */ /* Not for flex items */
+    /* inset: 0 0 0 0; */ /* Not for flex items */
+    /* transform: 
         rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
         translateZ(550px)
-        scale(1);
-    padding: 8px;
-    background: linear-gradient(45deg, #ff006e, #3a86ff);
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+        scale(1); */
+    padding: 8px; /* Keep padding if desired */
+    background: linear-gradient(45deg, #ff006e, #3a86ff); /* Keep or change as needed */
+    border-radius: 10px; /* Keep or change as needed */
+    box-shadow: 0 0 20px rgba(0,0,0,0.3); /* Keep or change as needed */
+    /* transition: all 0.3s ease; */ /* Replaced by transform transition below */
+
+    flex: 0 0 100%; /* Each item takes full width of the slider container */
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out; /* For smooth sliding */
+    display: flex; /* To help center image if needed or manage content */
+    align-items: center;
+    justify-content: center;
 }
 .banner .slider .item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 5px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px; /* Original had this, good to keep */
+    /* border: 2px solid rgba(255, 255, 255, 0.2); */ /* Optional border for image */
+    /* Ensure items themselves also have the border-radius if the image doesn't fill the padding area */
+    border-radius: 10px; /* Match item's border-radius */
+}
+.banner .slider .item {
+    /* ... existing styles ... */
+    border-radius: 10px; /* Consistent with image */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Adjusted shadow for more depth */
+    /* padding: 0; */ /* Remove padding if images are to fill the item entirely */
+    background: none; /* Remove item background if image is the main content */
 }
 .banner .slider .item:hover {
-    background: linear-gradient(45deg, #3a86ff, #ff006e);
-    transform: 
-        rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(560px)
-        scale(1.05);
-    transition: all 0.3s ease-in-out;
+    /* No specific hover transform needed for items anymore unless desired */
 }
 .banner .slider .item.bounce {
-    animation: none;
+    animation: none; /* This class was for the old JS bounce effect */
 }
-@keyframes bounceEffect {
+/* @keyframes bounceEffect { */
     /* Remove this entire keyframe */
-}
-.banner .content {
+/* } */
+
+/* Slider Controls Styling */
+.slider-controls {
     position: absolute;
+    top: 50%;
+    left: 0; /* Changed from 0 to specific positioning for prev/next */
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* This will be overridden by absolute pos of buttons */
+    transform: translateY(-50%);
+    z-index: 10; /* Ensure above items */
+    pointer-events: none; 
+}
+
+.slider-btn {
+    pointer-events: all;
+    background-color: rgba(37, 40, 59, 0.7); /* #25283B with alpha */
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%; /* Round buttons */
+    font-size: 1.5em; /* Make arrows a bit larger */
+    line-height: 1; /* Ensure text is centered vertically */
+    position: absolute; /* Position individually */
+    top: 50%; /* Already part of parent's transform, but needed for its own transform */
+    transform: translateY(-50%);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.slider-btn.prev-btn {
+    left: 15px; /* Adjust as needed */
+}
+
+.slider-btn.next-btn {
+    right: 15px; /* Adjust as needed */
+}
+
+.slider-btn:hover {
+    background-color: rgba(37, 40, 59, 0.9); /* Darker on hover */
+}
+
+.slider-btn:active {
+    background-color: rgba(37, 40, 59, 1); /* Even darker on active */
+    transform: translateY(-50%) scale(0.95); /* Slight press effect */
+}
+
+
+.banner .content {
+    position: absolute; /* Keep absolute positioning for now */
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: min(1400px, 100vw);
-    height: max-content;
-    padding-bottom: 100px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1;
+    width: min(1400px, 100vw); /* Keep width constraints */
+    height: max-content; /* Let content define height */
+    padding-bottom: 100px; /* Keep padding */
+    display: flex; /* Changed to flex column */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    z-index: 1; /* Below slider controls but above body::before */
+    /* justify-content: space-between; */ /* Removed as items are stacked now */
+    /* flex-wrap: wrap; */ /* Not needed for column layout */
 }
 .banner .content h1 {
     font-family: 'ICA Rubrik';
-    font-size: 16em;
+    font-size: 16em; /* This will likely overlap if slider is above, adjust as needed */
     line-height: 1em;
     color: #FFFFFF;
-    position: relative;
+    position: relative; /* Keep relative for ::after */
+    margin-bottom: 20px; /* Add some space below heading if slider is below it */
 }
 .banner .content h1::after {
     position: absolute;
@@ -123,69 +201,91 @@ body::before {
 }
 .banner .content .author {
     font-family: Poppins;
-    text-align: right;
-    max-width: 200px;
+    text-align: center; /* Center author text below heading */
+    /* max-width: 200px; */ /* Remove max-width or adjust if centered */
+    width: 100%; /* Allow author to take full width for centering */
     color: #fff;
+    margin-bottom: 20px; /* Space below author text */
 }
-.banner .content h2 {
-    font-size: 3em;
+.banner .content h2 { /* This was for the author text */
+    font-size: 3em; /* Adjust as needed */
 }
-.banner .content .model {
-    background-image: url(images/model.png);
+.banner .content .model { /* This was the large background model image */
+    background-image: url(images/model.png); /* Restore model image */
     width: 100%;
-    height: 75vh;
-    position: absolute;
+    height: 75vh; /* This might be too tall if slider and other content are also tall */
+    position: absolute; /* Keep absolute */
     bottom: 0;
     left: 0;
-    background-size: auto 130%;
+    background-size: auto 100%; /* Changed from 130% to 100% to prevent overflow if possible */
     background-repeat: no-repeat;
-    background-position: top center;
-    z-index: 1;
+    background-position: bottom center; /* Changed to bottom center */
+    z-index: 0; /* Behind all other content in .banner, including .banner .slider (z-index:2) */
 }
 
-/* Button Styles */
+/* Button Styles (These are the main CTA buttons, not slider nav) */
 .banner .content .buttons {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
+    /* position: absolute; */ /* No longer absolute, part of flex column */
+    /* bottom: 20px; */
+    /* left: 50%; */
+    /* transform: translateX(-50%); */
+    display: flex; /* Keep as flex for horizontal row of buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens if needed */
+    justify-content: center; /* Center buttons if they wrap */
     gap: 20px;
-    z-index: 3;
+    z-index: 3; /* Ensure they are above .model if it's active (though model is z-index 0 now) */
+    margin-top: 20px; /* Space above buttons if slider is above them */
+    width: 100%; /* Ensure container takes width for centering */
+    padding-left: 15px; /* Add some padding for smaller screens */
+    padding-right: 15px; /* Add some padding for smaller screens */
 }
-.banner .content .buttons button {
+.banner .content .buttons button { /* Styling for main CTA buttons */
     padding: 15px 30px;
-    font-size: 1.2em;
     font-family: 'Poppins', sans-serif;
+    font-size: 1.2em;
+    font-weight: 600; /* Added font-weight */
     color: #fff;
     background-color: #25283B;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Adjusted border-radius */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Added box-shadow */
+    text-decoration: none; /* In case <a> styles interfere, though button tag is primary */
+    transition: transform 0.2s ease-out, background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 .banner .content .buttons button:hover {
-    background-color: purple;
+    background-color: purple; /* Kept purple from original design for hover */
+    transform: translateY(-3px) scale(1.03); /* Lift effect */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3); /* Intensify shadow */
+}
+.banner .content .buttons button:active {
+    transform: translateY(1px) scale(0.98); /* Press-down effect */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Reduce shadow */
+    background-color: #1c1e2a; /* Slightly darker version of #25283B for active state */
 }
 
 @media screen and (max-width: 1023px) {
-    .banner .slider {
-        width: 160px;
-        height: 200px;
-        left: calc(50% - 80px);
-    }
-    .banner .slider .item {
-        transform: 
+    /* .banner .slider { */
+        /* width: 160px; */ /* Old 3D responsive */
+        /* height: 200px; */ /* Old 3D responsive */
+        /* left: calc(50% - 80px); */ /* Old 3D responsive */
+    /* } */
+    /* .banner .slider .item { */
+        /* transform: 
             rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-            translateZ(300px);
+            translateZ(300px); */ /* Old 3D responsive */
+    /* } */
+    .banner .slider { /* Adjust new slider for medium screens */
+        width: 90%;
+        height: 350px;
     }
     .banner .content h1 {
-        text-align: center;
-        width: 100%;
-        text-shadow: 0 10px 20px #000;
-        font-size: 7em;
+        text-align: center; /* This is fine */
+        width: 100%; /* This is fine */
+        text-shadow: 0 10px 20px #000; /* This is fine */
+        font-size: 7em; /* This is fine */
     }
-    .banner .content .author {
+    .banner .content .author { /* Responsive adjustments for author text */
         color: #fff;
         padding: 20px;
         text-shadow: 0 10px 20px #000;
@@ -195,42 +295,52 @@ body::before {
         text-align: center;
         padding: 0 30px;
     }
-    .banner .content .buttons {
-        bottom: 10px;
-        flex-direction: row;
-        gap: 10px;
+    .banner .content .buttons { /* Responsive adjustments for CTA buttons container */
+        /* bottom: 10px; */ /* No longer absolutely positioned to bottom */
+        flex-direction: row; /* Keep as row for medium screens */
+        gap: 15px; /* Adjust gap */
+        margin-top: 25px; /* Adjust margin */
     }
     .banner .content .buttons button {
-        padding: 10px 20px;
-        font-size: 1em;
+        padding: 12px 25px; /* Adjust padding */
+        font-size: 1.1em; /* Adjust font size */
     }
-    @keyframes bounceEffect {
-        0% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px); }
+    /* @keyframes bounceEffect { */ /* Old 3D responsive */
+        /* 0% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px); }
         50% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(350px); }
-        100% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px); }
-    }
+        100% { transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)) translateZ(300px); } */
+    /* } */
 }
 @media screen and (max-width: 767px) {
-    .banner .slider {
-        width: 100px;
-        height: 150px;
-        left: calc(50% - 50px);
-    }
-    .banner .slider .item {
-        transform: 
+    /* .banner .slider { */
+        /* width: 100px; */ /* Old 3D responsive */
+        /* height: 150px; */ /* Old 3D responsive */
+        /* left: calc(50% - 50px); */ /* Old 3D responsive */
+    /* } */
+    /* .banner .slider .item { */
+        /* transform: 
             rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
-            translateZ(180px);
+            translateZ(180px); */ /* Old 3D responsive */
+    /* } */
+    .banner .slider { /* Adjust new slider for small screens */
+        width: 95%;
+        height: 300px;
     }
-    .banner .content h1 {
+    .banner .content h1 { /* Responsive adjustments for heading */
         font-size: 5em;
     }
-    .banner .content .buttons {
-        bottom: 5px;
-        gap: 5px;
+    .banner .content .buttons { /* Responsive adjustments for CTA buttons container */
+        /* bottom: 5px; */ /* No longer absolutely positioned to bottom */
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center; /* Center buttons when stacked */
+        gap: 10px; /* Adjust gap */
+        margin-top: 20px; /* Adjust margin */
     }
     .banner .content .buttons button {
-        padding: 8px 16px;
-        font-size: 0.9em;
+        padding: 10px 20px; /* Adjust padding */
+        font-size: 1em; /* Adjust font size */
+        width: 80%; /* Make buttons wider on small screens */
+        max-width: 300px; /* But not too wide */
     }
 }
 
