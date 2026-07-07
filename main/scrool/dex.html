@@ -4,121 +4,274 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Featured Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #eaeaea;
+            overflow: hidden;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            height: 600px;
+            background: #f5f5f5;
+            box-shadow: 0 30px 50px #dbdbdb;
+        }
+
+        .container .project-slider .item {
+            width: 200px;
+            height: 300px;
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            border-radius: 20px;
+            box-shadow: 0 30px 50px #505050;
+            background-position: 50% 50%;
+            background-size: cover;
+            display: inline-block;
+            transition: 0.5s;
+        }
+
+        .project-slider .item:nth-child(1),
+        .project-slider .item:nth-child(2) {
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .project-slider .item:nth-child(3) {
+            left: 50%;
+        }
+
+        .project-slider .item:nth-child(4) {
+            left: calc(50% + 220px);
+        }
+
+        .project-slider .item:nth-child(5) {
+            left: calc(50% + 440px);
+        }
+
+        /* Here n can be 6, 7, 8... */
+        .project-slider .item:nth-child(n + 6) {
+            left: calc(50% + 660px);
+            opacity: 0;
+        }
+
+        .item .content {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            width: 300px;
+            text-align: left;
+            color: #eee;
+            transform: translate(0, -50%);
+            display: none;
+        }
+
+        .project-slider .item:nth-child(2) .content {
+            display: block;
+        }
+
+        .content .name {
+            font-size: 40px;
+            text-transform: uppercase;
+            font-weight: bold;
+            opacity: 0;
+            animation: showcontent 1s ease-in-out 1 forwards;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        .content .des {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: showcontent 1s ease-in-out 0.3s 1 forwards;
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        @keyframes showcontent {
+            from {
+                opacity: 0;
+                transform: translate(0, 100px);
+                filter: blur(33px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(0, 0);
+                filter: blur(0);
+            }
+        }
+
+        .buttons {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            bottom: 20px;
+        }
+
+        .buttons button {
+            width: 40px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            border: 1px solid #000;
+            transition: 0.3s;
+        }
+
+        .buttons button:hover {
+            background: #ababab;
+            color: #fff;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #25283B;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            z-index: 100;
+        }
+    </style>
 </head>
 <body>
     
+<a href="../../index.html" class="back-btn">Back to Home</a>
+
 <div class="container">
-    <div class="project-slider"> <!-- Renamed from "slide" -->
+    <div class="project-slider">
       <div class="item" style="background-image: url(dragon_1.jpg);">
         <div class="content">
-          <a href="https://auto-turbo.netlify.app" class="name">View Project</a>
-          <div class="des">
-A website demo for selling and buying of cars </div>
+          <a href="https://auto-turbo.netlify.app" class="name">Auto Turbo</a>
+          <div class="des">A website demo for selling and buying of cars.</div>
+          <a href="https://auto-turbo.netlify.app" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
   
       <div class="item" style="background-image: url(dragon_2.jpg);">
         <div class="content">
-          <a href="https://victor-e-jarvis.netlify.app" class="name">View Project</a>
-          <div class="des">
-            This is a Iron man weather application, that gives accurate information about the weather, but it is design to make you feel as if you are in one of Tony Stark suit.
-          </div>
+          <a href="https://victor-e-jarvis.netlify.app" class="name">Jarvis Weather</a>
+          <div class="des">Iron man weather application giving accurate info with a Stark suit feel.</div>
+          <a href="https://victor-e-jarvis.netlify.app" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
   
       <div class="item" style="background-image: url(dragon_3.png);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216559363/Pet-Shop" class="name">View Project</a>
-          <div class="des">
-            One of my first early UI/UX design, a landing page relating to animal vet, this is just the landing page and one of my old UI designs.
-          </div>
+          <a href="https://www.behance.net/gallery/216559363/Pet-Shop" class="name">Pet Shop</a>
+          <div class="des">Early UI/UX design for an animal vet landing page.</div>
+          <a href="https://www.behance.net/gallery/216559363/Pet-Shop" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
   
       <div class="item" style="background-image: url(dragon_4.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216559441/Soundbox" class="name">View Project</a>
-          <div class="des">
-            Who doesnt love music, this UI design shows a unique blend to showcase gadgets to the audience.
-          </div>
+          <a href="https://www.behance.net/gallery/216559441/Soundbox" class="name">Soundbox</a>
+          <div class="des">UI design showcasing music gadgets in a unique way.</div>
+          <a href="https://www.behance.net/gallery/216559441/Soundbox" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
       
-      <div class="item" style="background-image: url( dragon_5.png);">
+      <div class="item" style="background-image: url(dragon_5.png);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/202024731/Empower-wellness" class="name">View Project</a>
-          <div class="des">
-            A UI design and code of a health care website, reference to Healthytogether.
-          </div>
+          <a href="https://www.behance.net/gallery/202024731/Empower-wellness" class="name">Empower Wellness</a>
+          <div class="des">UI design and code of a health care website.</div>
+          <a href="https://www.behance.net/gallery/202024731/Empower-wellness" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
-      <div class="item" style="background-image: url( dragon_6.jpg);">
+
+      <div class="item" style="background-image: url(dragon_6.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216558211/Payroll_Software-UI" class="name">View Project</a>
-          <div class="des">
-This is my first ever full stack website, I did back in Otefe-Oghara, took me an entire month, the software works amazing, but i plan to make it better later in the future.
-          </div>
+          <a href="https://www.behance.net/gallery/216558211/Payroll_Software-UI" class="name">Payroll Software</a>
+          <div class="des">First ever full stack website, an amazing working software.</div>
+          <a href="https://www.behance.net/gallery/216558211/Payroll_Software-UI" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
 
       <div class="item" style="background-image: url(dragon_7.png);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/216577939/Iphone-UI-Store" class="name">View Project</a>
-          <div class="des">
-A little challenge i engage myself in, making and coding, and trying out scroll animation, the design is not too impressive like apple website, but in the future i plan to improve it.
-          </div>
+          <a href="https://www.behance.net/gallery/216577939/Iphone-UI-Store" class="name">iPhone UI Store</a>
+          <div class="des">Coding challenge exploring scroll animations and product display.</div>
+          <a href="https://www.behance.net/gallery/216577939/Iphone-UI-Store" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
 
       <div class="item" style="background-image: url(dragon_8.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/195122063/crusinX" class="name">View Project</a>
-          <div class="des">
-This is a UI design i made, about a shopping website, i engage typography, case study, and icons I used.
-          </div>
+          <a href="https://www.behance.net/gallery/195122063/crusinX" class="name">CrusinX</a>
+          <div class="des">Shopping website UI design focusing on typography and case study.</div>
+          <a href="https://www.behance.net/gallery/195122063/crusinX" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
 
       <div class="item" style="background-image: url(dragon_9.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/195023447/Crpyto-Currency-Case-Study" class="name">View Project</a>
-          <div class="des">
-This was very difficult, i had to research more on crypto, it was fun, but naviagting the space was hard.
-          </div>
+          <a href="https://www.behance.net/gallery/195023447/Crpyto-Currency-Case-Study" class="name">Crypto Case Study</a>
+          <div class="des">Research-intensive crypto currency UI design and case study.</div>
+          <a href="https://www.behance.net/gallery/195023447/Crpyto-Currency-Case-Study" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
       
       <div class="item" style="background-image: url(dragon_10.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/192751265/Grove-Travels" class="name">View Project</a>
-          <div class="des">
-My first ever UI project, this was what i started with to understand ui/ux and learn how to turn my designs to live projects, i still have a long way  to go, but i always presevere.
-          </div>
+          <a href="https://www.behance.net/gallery/192751265/Grove-Travels" class="name">Grove Travels</a>
+          <div class="des">First ever UI project, understanding UI/UX and turning designs to life.</div>
+          <a href="https://www.behance.net/gallery/192751265/Grove-Travels" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
-        
       </div>
 
       <div class="item" style="background-image: url(dragon_11.jpg);">
         <div class="content">
-          <a href="https://www.behance.net/gallery/194689135/Savquisite-Foundation" class="name">View Project</a>
-          <div class="des">
-This website is almost like Jumia, but with it is a case study that talks about every section, and how the app works, the color layout, the grif, and of course responsiveness, this project challaneg my creativity.
-          </div>
+          <a href="https://www.behance.net/gallery/194689135/Savquisite-Foundation" class="name">Savquisite Foundation</a>
+          <div class="des">Case study about a complex shopping application and its responsiveness.</div>
+          <a href="https://www.behance.net/gallery/194689135/Savquisite-Foundation" style="color: #fff; background: #25283B; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View Project</a>
         </div>
       </div>
-    </div> <!-- End of .project-slider -->
-  
-    <div class="buttons"> <!-- Moved outside .project-slider -->
-      <button class="prev">&#x2190;</button>
-      <button class="next">&#x2192;</button>
     </div>
-    <div class="slider-pagination">
-        <!-- Dots will be generated by JS -->
+
+    <div class="buttons">
+      <button class="prev"><b>&lt;</b></button>
+      <button class="next"><b>&gt;</b></button>
     </div>
   </div>
 
-  <div class="fullscreen-overlay">
-    <img class="fullscreen-image" src="" alt="Fullscreen view">
-  </div>
+  <script>
+    let next = document.querySelector('.next')
+    let prev = document.querySelector('.prev')
+
+    next.addEventListener('click', function(){
+        let items = document.querySelectorAll('.item')
+        document.querySelector('.project-slider').appendChild(items[0])
+    })
+
+    prev.addEventListener('click', function(){
+        let items = document.querySelectorAll('.item')
+        document.querySelector('.project-slider').prepend(items[items.length - 1])
+    })
+  </script>
 </body>
 </html>
